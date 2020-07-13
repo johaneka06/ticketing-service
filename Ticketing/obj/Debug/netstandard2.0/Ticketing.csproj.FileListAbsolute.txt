@@ -1,0 +1,9 @@
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\bin\Debug\netstandard2.0\Ticketing.deps.json
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\bin\Debug\netstandard2.0\Ticketing.dll
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\bin\Debug\netstandard2.0\Ticketing.pdb
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.csprojAssemblyReference.cache
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.csproj.CoreCompileInputs.cache
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.AssemblyInfoInputs.cache
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.AssemblyInfo.cs
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.dll
+D:\Coba\Project\DummyProject\Ticketing-Project\Airline\Ticketing\obj\Debug\netstandard2.0\Ticketing.pdb
