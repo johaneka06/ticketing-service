@@ -14,8 +14,8 @@ CREATE TABLE Flight_Data
     Fleet           CHAR(5) REFERENCES Aircraft(Fleet),
     Departure_Apt   CHAR(3),
     Arrival_Apt     CHAR(3),
-    Dep_Sched       TIME,
-    Arr_Sched       TIME,
+    Dep_Sched       TIMESTAMPTZ,
+    Arr_Sched       TIMESTAMPTZ,
     Route_Slot      INT[]
     Price           INT
 );

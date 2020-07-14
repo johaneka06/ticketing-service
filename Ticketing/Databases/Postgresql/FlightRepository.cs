@@ -17,7 +17,7 @@ namespace Ticketing.Databases
 
         public List<Flight> FindFlight(string departure, string arrival, DateTime departureDate, int ticket)
         {
-            int dayOfWeek = departureDate.Day;
+            int dayOfWeek = Convert.ToInt32(departureDate.DayOfWeek);
             List<Flight> listOfFlight = new List<Flight>();
             string query = @"SELECT flight_no, fleet, departure_apt, arrival_apt, dep_sched, arr_sched, price
                 FROM flight_data f
