@@ -35,11 +35,11 @@ namespace Ticketing
             }
         }
 
-        public TimeSpan DepartureSchedule
+        public string DepartureSchedule
         {
             get
             {
-                return this._departure_sched.TimeOfDay;
+                return this._departure_sched.ToString("HH:mm");
             }
         }
 
@@ -51,11 +51,11 @@ namespace Ticketing
             }
         }
 
-        public TimeSpan ArrivalSchedule
+        public string ArrivalSchedule
         {
             get
             {
-                return this._arrival_sched.TimeOfDay;
+                return this._arrival_sched.ToString("HH:mm");
             }
         }
 
