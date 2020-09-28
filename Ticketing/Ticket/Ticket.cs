@@ -10,6 +10,7 @@ namespace Ticketing
         private List<string> _passengerLName_List;
         private string _flightNo;
         private DateTime _departureDate;
+        private int _price;
 
         public string BookingCode
         {
@@ -51,18 +52,27 @@ namespace Ticketing
             }
         }
 
-        public Ticket(BookCode code, List<string> passengerFName_List, List<string> passengerLName_List, string FlightNo, DateTime departureDate)
+        public int Price
+        {
+            get
+            {
+                return this._price;
+            }
+        }
+
+        public Ticket(BookCode code, List<string> passengerFName_List, List<string> passengerLName_List, string FlightNo, DateTime departureDate, int price)
         {
             this._code = code;
             this._passengerFName_List = passengerFName_List;
             this._passengerLName_List = passengerLName_List;
             this._flightNo = FlightNo;
             this._departureDate = departureDate;
+            this._price = price;
         }
 
-        public static Ticket IssueTicket(List<string> passengerFName_List, List<string> passengerLName_List, string FlightNo, DateTime departureDate)
+        public static Ticket IssueTicket(List<string> passengerFName_List, List<string> passengerLName_List, string FlightNo, DateTime departureDate, int price)
         {
-            return new Ticket(new BookCode(), passengerFName_List, passengerLName_List, FlightNo, departureDate);
+            return new Ticket(new BookCode(), passengerFName_List, passengerLName_List, FlightNo, departureDate, price);
         }
 
         public void UpdateDate(DateTime newDate)

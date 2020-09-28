@@ -35,11 +35,11 @@ namespace Ticketing
             }
         }
 
-        public string DepartureSchedule
+        public Time DepartureSchedule
         {
             get
             {
-                return this._departure_sched.ToString("HH:mm");
+                return new Time(this._departure_sched.Hour, this._departure_sched.Minute, 7);
             }
         }
 
@@ -51,11 +51,11 @@ namespace Ticketing
             }
         }
 
-        public string ArrivalSchedule
+        public Time ArrivalSchedule
         {
             get
             {
-                return this._arrival_sched.ToString("HH:mm");
+                return new Time(this._arrival_sched.Hour, this._arrival_sched.Minute, 7);
             }
         }
 
@@ -105,6 +105,20 @@ namespace Ticketing
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+    }
+
+    public class Time
+    {
+        public int Hour {get; private set;}
+        public int Min {get; private set;}
+        public int TimeZone {get; private set;}
+
+        public Time(int hour, int min, int tz)
+        {
+            this.Hour = hour;
+            this.Min = min;
+            this.TimeZone = tz;
         }
     }
 }

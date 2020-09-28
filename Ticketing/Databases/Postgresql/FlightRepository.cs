@@ -19,15 +19,17 @@ namespace Ticketing.Databases
         {
             int dayOfWeek = Convert.ToInt32(departureDate.DayOfWeek);
             List<Flight> listOfFlight = new List<Flight>();
-            string query = @"SELECT flight_no, fleet, departure_apt, arrival_apt, dep_sched, arr_sched, price
+            string query = @"SELECT flight_no, f.fleet, departure_apt, arrival_apt, dep_sched, arr_sched, price
                 FROM flight_data f
-                WHERE @slot = ANY (route_slot) AND departure_apt = @dept AND arrival_apt = @arr";
+                    JOIN aircraft ar ON f.fleet = ar.fleet
+                WHERE @slot = ANY (route_slot) AND departure_apt = @dept AND arrival_apt = @arr AND ar.capacity >= @ticket";
 
             using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
             {
                 cmd.Parameters.AddWithValue("slot", dayOfWeek);
                 cmd.Parameters.AddWithValue("dept", departure);
                 cmd.Parameters.AddWithValue("arr", arrival);
+                cmd.Parameters.AddWithValue("ticket", ticket);
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -47,7 +49,7 @@ namespace Ticketing.Databases
                 }
             }
 
-            listOfFlight = CorrectList(listOfFlight, ticket, departureDate);
+            if(listOfFlight.Count > 0) listOfFlight = CorrectList(listOfFlight, ticket, departureDate);
 
             return listOfFlight;
         }
@@ -80,6 +82,33 @@ namespace Ticketing.Databases
             }
 
             return list;
+        }
+
+        public Flight FlightInfo(string flightNumber)
+        {
+            string query = @"SELECT flight_no, fleet, departure_apt, arrival_apt, dep_sched, arr_sched, price 
+                FROM flight_data WHERE flight_no = @flightNumber";
+            
+            using(var cmd = new NpgsqlCommand(query, _connection, _transaction))
+            {
+                cmd.Parameters.AddWithValue("flightNumber", flightNumber);
+                using(var reader = cmd.ExecuteReader())
+                {
+                    if(reader.Read())
+                    {
+                        return new Flight(new FlightNumber(flightNumber), 
+                            new Fleet(reader.GetString(1)),
+                            reader.GetString(2),
+                            reader.GetString(3),
+                            reader.GetDateTime(4),
+                            reader.GetDateTime(5),
+                            reader.GetInt32(6));
+                    }
+                    reader.Close();
+                }
+            }
+
+            return null;
         }
     }
 }

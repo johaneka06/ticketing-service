@@ -18,12 +18,13 @@ namespace Ticketing.Databases
         public void IssueTicket(Ticket t)
         {
             Guid id = Guid.NewGuid();
-            string query = "INSERT INTO ticket_header VALUES (@code, @id, @pax)";
+            string query = "INSERT INTO ticket_header (booking_code, entry_id, passenger_lname, price) VALUES (@code, @id, @pax, @price)";
             using(var cmd = new NpgsqlCommand(query, _connection, _transaction))
             {
                 cmd.Parameters.AddWithValue("code", t.BookingCode);
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.Parameters.AddWithValue("pax", t.PassengerLName[0]);
+                cmd.Parameters.AddWithValue("price", t.Price);
                 cmd.ExecuteNonQuery();
             }
 
@@ -47,7 +48,8 @@ namespace Ticketing.Databases
         public Ticket RetrieveTicketInfo(string BookingId, string LastName)
         {
             Guid id = Guid.Empty;
-            string query = "SELECT (booking_code, entry_id) FROM ticket_header WHERE booking_code = @code AND passenger_lname = @name";
+            int price = 0;
+            string query = "SELECT booking_code, entry_id, price FROM ticket_header WHERE booking_code = @code AND passenger_lname = @name";
 
             using(var cmd = new NpgsqlCommand(query, _connection, _transaction))
             {
@@ -59,6 +61,7 @@ namespace Ticketing.Databases
                     if(reader.Read())
                     {
                         id = reader.GetGuid(1);
+                        price = reader.GetInt32(2);
                     }
                 }
             }
@@ -88,7 +91,7 @@ namespace Ticketing.Databases
                 }
             }
 
-            Ticket t = new Ticket(new BookCode(bookingCode), FName, LName, flightNo, departureDate);
+            Ticket t = new Ticket(new BookCode(bookingCode), FName, LName, flightNo, departureDate, price);
             return t;
         }
     }

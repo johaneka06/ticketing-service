@@ -10,12 +10,12 @@ using Ticketing.Databases;
 namespace Ticketing.API
 {
     [ApiController]
-    public class FlightController : ControllerBase
+    public class TicketController : ControllerBase
     {
-        private readonly ILogger<FlightController> _logger;
+        private readonly ILogger<TicketController> _logger;
         private UnitOfWork uow;
 
-        public FlightController(ILogger<FlightController> logger)
+        public TicketController(ILogger<TicketController> logger)
         {
             _logger = logger;
             DotNetEnv.Env.Load();
@@ -28,18 +28,23 @@ namespace Ticketing.API
             uow = new UnitOfWork(host, db, username, password, port);
         }
 
-        [HttpGet("api/v1/flight")]
-        public ActionResult<IEnumerable<Flight>> AllFlight([FromBody] RequestData data)
+        [HttpPost("api/v1/ticket")]
+        public ActionResult<Ticket> IssueTicket([FromBody] IssueData data)
         {
-            List<Flight> flights = uow.FlightRepository.FindFlight(data.departureAirport, data.arrivalAirport, data.departureDate, data.paxTotal);
-            return (flights.Count != 0) ? new ActionResult<IEnumerable<Flight>>(flights) : NoContent(); 
+            Ticket t = Ticket.IssueTicket(data.FNames.ToList(), data.LName.ToList(), data.flightNo, data.date, data.price);
+
+            uow.TicketRepository.IssueTicket(t);
+            uow.Commit();
+
+            return (t != null) ? new ActionResult<Ticket>(t) : BadRequest();
         }
 
-        [HttpGet("api/v1/flight/{flightNo}")]
-        public ActionResult<Flight> OneFlight(string flightNo)
+        [HttpGet("api/v1/ticket/{bookingCode}")]
+        public ActionResult<Ticket> RetrieveTicket(string bookingCode, [FromBody] RetrieveInfo data)
         {
-            Flight f = uow.FlightRepository.FlightInfo(flightNo);
-            return (f == null) ? NotFound("No flight found!") : new ActionResult<Flight>(f);
+            Ticket t = uow.TicketRepository.RetrieveTicketInfo(data.code, data.LName);
+
+            return (t != null) ? new ActionResult<Ticket>(t) : NoContent();
         }
     }
 }
